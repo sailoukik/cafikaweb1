@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Form 2 (Table)</title>
+    <link rel="stylesheet" href="form.css" >
+    <style>
+      body {
+        background-image: url('e.jpg');
+        background-size: cover; /* To make the image cover the entire viewport */
+        background-repeat: no-repeat; /* To prevent the image from repeating */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="testbox">
+    <form form method="post" name="google-sheet">
+      <div class="banner">
+        <h1>Table Booking Form-table-room1</h1>
+      </div>
+      <br/>
+      <fieldset>
+        <legend  style="color: aliceblue;"> Reservation Details</legend>
+        <div class="columns">
+          <div class="item">
+            <label for="fname"  style="color: aliceblue;">First Name<span>*</span></label>
+            <input id="fname" type="text" name="fname" />
+          </div>
+          <div class="item">
+            <label for="lname"  style="color: aliceblue;"> Last Name<span>*</span></label>
+            <input id="lname" type="text" name="lname" />
+          </div>
+          <div class="item">
+            <label for="email"  style="color: aliceblue;">Email Address<span>*</span></label>
+            <input id="email" type="text"   name="email" />
+          </div>
+          <div class="item">
+            <label for="phone"  style="color: aliceblue;">Phone<span>*</span></label>
+            <input id="phone" type="tel"   name="phone" />
+          </div>
+        </div>
+      </fieldset>
+      <br/>
+      <fieldset>
+      <legend  style="color: aliceblue;">Dates</legend>
+      <div class="columns">
+      <div class="item">
+      <label for="date"  style="color: aliceblue;">Date <span>*</span></label>
+      <input id="date" type="date" name="date" />
+      </div>
+      <div class="item">
+        </div>
+      <div class="item">
+      <p  style="color: aliceblue;"> Time </p>
+      <div class="item">
+        <input id="timing" type="number" placeholder="      timings"  name="timing" />
+      </div>
+      <div class="item">
+    </div>  
+      <div class="item">
+      <p  style="color: aliceblue;">How many tables</p>
+      <div class="item">
+        <input id="tables" type="number" placeholder="   count"  name="tables" />
+      </div>
+      <label for="instruction"  style="color: aliceblue;">Special Instructions</label>
+      <textarea id="instruction" rows="3"></textarea>
+      <h3  style="color: aliceblue;">qr code</h3>
+      <p  style="color: aliceblue;"> you will get the qr code after the registartion after please make shoure to sake it </p>
+      </div>
+      </fieldset>
+      <div class="btn-block">
+        <button type="submit" value="send message" onclick="generateqr();sendemail()">Submit</button>
+      </div>
+    
+      <div id="qrcode" >
+
+      </div>
+    </form>
+    </div>
+    <script>
+      const scriptURL ='https://script.google.com/macros/s/AKfycbzl7KPPScl-ZWV3caciVVKre1cnrvDFyoeLM1OA7iM2nrLZ3JgVK-Aeerz3pab0ZeFb/exec'
+      const form = document.forms['google-sheet']
+    
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => alert("Thanks for Contacting us..! We Will Contact You Soon..."))
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
+    <script>
+            function generateqr() {
+              var fname = document.getElementById('fname').value;
+              var lname = document.getElementById('lname').value;
+              var email = document.getElementById('email').value;
+              var phone = document.getElementById('phone').value;
+              var Formdate = document.getElementById('date').value;
+              var Todate = document.getElementById('timing').value;
+              var hours = document.getElementById('tables').value;
+              
+    
+             console.log( "<br>fname" + fname + "lname" + lname+ "email" + email+ "phone " + phone+ "date " + date+ "timing " + timing+ "tables" + tables);
+    
+             var url = "https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=Name:"+"<br>room-1"+"<br>fname:" + fname +"<br>"+ "lname:" + lname+"<br>"+ "email:" + email+"<br>"+ "phone: " + phone+"<br>"+ "date:" + date+"<br>"+ "timing:" + timing+"<br>"+ "tables" + tables;
+    
+             var ifr = `<iframe src="${url}" height="200" width="200" margin-left="500px"> </iframe>`;
+    
+             document.getElementById('qrcode').innerHTML = ifr;
+             }  
+          </script>
+         <script src="https://smtpjs.com/v3/smtp.js"></script>
+          <script> 
+           function sendemail(){
+             var fname = document.getElementById('fname').value;
+              var lname = document.getElementById('lname').value;
+              var email = document.getElementById('email').value;
+              var phone = document.getElementById('phone').value;
+              var Formdate = document.getElementById('date').value;
+              var Todate = document.getElementById('timing').value;
+              var hours = document.getElementById('tables').value;
+             Email.send({
+             Host : "smtp.elasticemail.com",
+             Username : "cafikajublieehills@gmail.com",
+             Password : "77E68D2816F3938CBDEFCC325E0457772371",
+             To : document.getElementById('email').value,
+             From : "cafikajublieehills@gmail.com",
+             Subject : "To Conform your reservation at room-1 in cafe",
+             Body :"you have registered at the cafe at the room-1 we will provide you all the things required to you <br>your booked place:room-1"+"<br>room-1"+"<br>fname:" + fname +"<br>"+ "lname:" + lname+"<br>"+ "email:" + email+"<br>"+ "phone: " + phone+"<br>"+ "date:" + date+"<br>"+ "timing:" + timing+"<br>"+ "tables" + tables+"<br>this are the registration details of your booking"+"<br>we will contact you as soon as possible and your responce is noted "+"we welocome to our cafe we promisse you that you will have best time in our cafe",
+             }).then(
+             message => alert(message)
+             );
+             }
+          </script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="jquery.min.js"></script>
+<script src="jquery.validate.min.js"></script>
+  </body>
+</html>
